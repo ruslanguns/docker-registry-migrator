@@ -1,0 +1,30 @@
+# Binaries, plugins, libs etc
+**/*.a
+**/*.so
+**/*.lib
+**/*.dll
+**/*.dylib
+**/*.exe
+**/*.out
+**/*.o
+**/*.obj
+**/*.test
+
+# Directories
+/.idea/
+/vendor/
+/bin/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

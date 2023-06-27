@@ -1,0 +1,7 @@
+# Destination to push the image
+newRegistry: "ruslanguns"
+
+# Source image to pull
+images:
+  - "alpine:latest"
+  - "ubuntu:latest"
