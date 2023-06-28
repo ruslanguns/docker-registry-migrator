@@ -16,8 +16,15 @@ type Config struct {
 	Images      []string `yaml:"images"`
 }
 
+var defaultConfigPath = "./config.yml"
+
 func main() {
 	configPath := flag.String("config", "", "path to config file")
+
+	if *configPath == "" {
+		*configPath = defaultConfigPath
+	}
+
 	flag.Parse()
 
 	if *configPath == "" {
@@ -40,14 +47,25 @@ func main() {
 	newRegistry := config.NewRegistry
 
 	for _, image := range config.Images {
-		imageParts := strings.SplitN(image, ":", 2)
+		repoName := strings.SplitN(image, "/", 2)[1]
+
+		imageParts := strings.SplitN(repoName, ":", 2)
 		imageName := imageParts[0]
 		imageTag := "latest"
+
 		if len(imageParts) > 1 {
 			imageTag = imageParts[1]
 		}
 
-		newImage := fmt.Sprintf("%s/%s:%s", newRegistry, imageName, imageTag)
+		imageNameParts := strings.Split(imageName, "/")
+		actualImageName := imageNameParts[len(imageNameParts)-1]
+
+		var newImage string
+		if len(imageNameParts) > 1 {
+			newImage = fmt.Sprintf("%s/%s:%s", newRegistry, actualImageName, imageTag)
+		} else {
+			newImage = fmt.Sprintf("%s/%s:%s", newRegistry, imageName, imageTag)
+		}
 
 		err := execCommand("docker", "pull", image)
 		if err != nil {
